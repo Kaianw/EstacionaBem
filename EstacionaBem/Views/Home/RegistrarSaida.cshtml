@@ -1,0 +1,21 @@
+﻿@model EstacionaBem.Models.SaidaModel
+@{
+    ViewData["Title"] = "Add Parkings";
+}
+@if(ViewBag.errorMessages != null)
+{
+  <div>@ViewBag.ErrorMessages</div>
+}
+<form action="/home/RegistrarSaida" method="post">
+    <div class="form-group">
+        <label>Placa do veiculo</label>
+        <input type="text" asp-for="placa"></input>
+        <span asp-validation-for="placa" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Data e hora da saida</label>
+        <input type="datetime" asp-for="saida"></input>
+        <span asp-validation-for="saida" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Registrar</button>
+</form>

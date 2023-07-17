@@ -1,0 +1,80 @@
+﻿@using EstacionaBem.Models
+@{
+    ViewData["Title"] = "Parkings";
+}
+
+<div class="text-center">
+    <div class="container">
+        @if (ViewBag.estadias != null && ViewBag.estadias.Count >= 1)
+        {
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Placa</th>
+                  <th scope="col">Chegada</th>
+                  <th scope="col">Saida</th>
+                  <th scope="col">Preço</th>
+                </tr>
+              </thead>
+              <tbody>
+                  @foreach (var estadia in ViewBag.estadias)
+                    {
+                        <tr>
+                          <td>@estadia.placa</td>
+                          <td>@estadia.chegada</td>
+                          @if (@estadia.saida != DateTime.MinValue) 
+                          {
+                            <td>@estadia.saida</td>
+                          }
+                          else
+                          {
+                              <td></td>
+                          }
+                          <td>R$ @estadia.preco.ToString("0.00")</td>
+                        </tr>
+                    }
+                    @if (ViewBag.estadias.Count < 12)
+                    {
+                        @for (int i=12;i>ViewBag.estadias.Count;i--)
+                        {
+                            <tr>
+                            <td>&#xfeff</td>
+                            <td>&#xfeff</td>
+                            <td>&#xfeff</td>
+                            <td>&#xfeff</td>
+                            </tr>
+                        }
+                        
+                    }
+                </tbody>
+            </table>
+        }
+        @if (ViewBag.estadias.Count == 0)
+        {
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Placa</th>
+                  <th scope="col">Chegada</th>
+                  <th scope="col">Saida</th>
+                  <th scope="col">Preço</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (int i=12;i>ViewBag.estadias.Count;i--)
+                {
+                    <tr>
+                    <td>&#xfeff</td>
+                    <td>&#xfeff</td>
+                    <td>&#xfeff</td>
+                    <td>&#xfeff</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+        <li>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="RegistrarEntrada">Registrar Entrada</a>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="RegistrarSaida">Registrar Saida</a>
+        </li>
+    </div>

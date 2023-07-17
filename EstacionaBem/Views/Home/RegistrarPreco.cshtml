@@ -1,0 +1,35 @@
+﻿@model EstacionaBem.Models.PrecoModel
+@using System;
+
+@{
+    ViewData["Title"] = "Add Prices";
+}
+@if(ViewBag.errorMessages != null)
+{
+  <div>@ViewBag.ErrorMessages</div>
+}
+<form action="/home/RegistrarPreco" method="post">
+    <div class="form-group">
+        <label>Inicio do periodo de vigência</label>
+        <input type="date" asp-for="vigenciaInicio"></input>
+        <span asp-validation-for="vigenciaInicio" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Fim do periodo de vigência</label>
+        <input type="date" asp-for="vigenciaFim"></input>
+        <span asp-validation-for="vigenciaFim" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Preço da hora inicial</label>
+        <label>R$</label>
+        <input type="text" asp-for="precoHoraInicial"></input>
+        <span asp-validation-for="precoHoraInicial" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Preço após a hora inicial</label>
+        <label>R$</label>
+        <input type="text" asp-for="precoHoraAdicional"></input>
+        <span asp-validation-for="precoHoraAdicional" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Registrar</button>
+</form>
