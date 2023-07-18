@@ -61,7 +61,7 @@ namespace EstacionaBem.Controllers
                             novaEstadia.chegada = entrada.chegada;
                             db.Add(novaEstadia);
                             db.SaveChanges();
-                            return RedirectToAction("Estadias", "Home");
+                            return RedirectToAction("Index", "Estadias");
                         }
                         else
                         {

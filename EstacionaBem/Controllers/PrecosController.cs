@@ -59,7 +59,7 @@ namespace EstacionaBem.Controllers
                             db.Add(price);
                             db.SaveChanges();
                             transaction.Commit();
-                            return RedirectToAction("Precos", "Home");
+                            return RedirectToAction("Index", "Precos");
 
                         }
                         else
