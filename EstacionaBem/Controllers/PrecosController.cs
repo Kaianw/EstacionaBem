@@ -15,10 +15,10 @@ namespace EstacionaBem.Controllers
         {
             IQueryable<PrecoModel> precos;
             PagedList<PrecoModel> list;
-            int pageSize = 12;
+            int pageSize = 10;
             using (var db = new ParkContext())
             {
-                precos = db.precos.AsNoTracking();
+                precos = db.precos.AsNoTracking().OrderByDescending(o => o.id);
                 list = await PagedList<PrecoModel>.CreateAsync(precos, pageIndex ?? 1, pageSize);
             }
 

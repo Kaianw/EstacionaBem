@@ -15,10 +15,10 @@ namespace EstacionaBem.Controllers
         {
             IQueryable<EstadiaModel> estadias;
             PagedList<EstadiaModel> list;
-            int pageSize = 12;
+            int pageSize = 10;
             using (var db = new ParkContext())
             {
-                estadias = db.estadias.AsNoTracking();
+                estadias = db.estadias.AsNoTracking().OrderByDescending(o => o.id);
                 list = await PagedList<EstadiaModel>.CreateAsync(estadias, pageIndex ?? 1, pageSize);
             }
 
