@@ -15,7 +15,7 @@ namespace EstacionaBem.Controllers
         {
             IQueryable<PrecoModel> precos;
             PagedList<PrecoModel> list;
-            int pageSize = 1;
+            int pageSize = 12;
             using (var db = new ParkContext())
             {
                 precos = db.precos.AsNoTracking();
