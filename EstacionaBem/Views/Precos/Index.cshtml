@@ -1,0 +1,63 @@
+﻿@model PagedList<PrecoModel>
+@{
+    ViewData["Title"] = "Precos";
+}
+
+<div class="text-center">
+    <div class="container">
+        @if (Model != null && Model.Count >= 0)
+        {
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Inicio de vigência</th>
+                  <th scope="col">Fim de vigência</th>
+                  <th scope="col">Preço da primeira hora</th>
+                  <th scope="col">Preço a partir da segunda hora</th>
+                </tr>
+              </thead>
+              <tbody>
+                  @foreach (var preco in Model)
+                    {
+                        <tr>
+                          <td>@preco.vigenciaInicio.Value.ToString("dd/MM/yyyy")</td>
+                          <td>@preco.vigenciaFim.Value.ToString("dd/MM/yyyy")</td>
+                          <td>R$ @preco.precoHoraInicial.Value.ToString("0.00")</td>
+                          <td>R$ @preco.precoHoraAdicional.Value.ToString("0.00")</td>
+                        </tr>
+                    }
+                    @if (Model.Count < 12)
+                    {
+                        @for (int i=12;i>Model.Count;i--)
+                        {
+                            <tr>
+                            <td>&#xfeff</td>
+                            <td>&#xfeff</td>
+                            <td>&#xfeff</td>
+                            <td>&#xfeff</td>
+                            </tr>
+                        }
+                        
+                    }
+              </tbody>
+            </table>
+        }
+
+        @{
+             var prevDisabled = !Model.HasPrevious ? "disabled" : "";
+             var nextDisabled = !Model.HasNext ? "disabled" : "";
+         }
+
+        <a asp-page="/Index"
+           asp-route-pageIndex="@(Model.CurrentPage - 1)"
+           class="btn btn-primary @prevDisabled">
+            Previous
+        </a>
+        <a asp-page="/Index"
+           asp-route-pageIndex="@(Model.CurrentPage + 1)"
+           class="btn btn-primary @nextDisabled">
+            Next
+        </a>
+    </div>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Precos" asp-action="RegistrarPreco">Registrar Preço</a>
+    </div>
