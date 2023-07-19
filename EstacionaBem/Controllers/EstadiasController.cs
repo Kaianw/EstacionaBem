@@ -87,34 +87,35 @@ namespace EstacionaBem.Controllers
                                             where saidaModelo.placa == e.placa
                                             && e.saida == null
                                             select e).SingleOrDefault();
-                    if (estadia != null)
-                    {
-                        estadia.saida = saidaModelo.saida;
-                        TimeSpan? diferenca = estadia.saida - estadia.chegada;
-                        PrecoModel precoCorreto =
-                                        (from p in db.precos
-                                         where estadia.chegada >= p.vigenciaInicio
-                                         && estadia.chegada <= p.vigenciaFim
-                                         select p).SingleOrDefault();
-                        if (precoCorreto != null)
-                        {
-                            if (diferenca.Value.Days == 0 && diferenca.Value.Hours == 0 && diferenca.Value.Minutes <= 30)
-                                estadia.preco = (precoCorreto.precoHoraInicial.Value / 2);
-                            else if (diferenca.Value.Minutes > 10)
-                                estadia.preco = (precoCorreto.precoHoraInicial.Value + precoCorreto.precoHoraAdicional.Value * (diferenca.Value.Hours + 1) + precoCorreto.precoHoraAdicional.Value * diferenca.Value.Days * 24);
-                            else
-                                estadia.preco = (precoCorreto.precoHoraInicial.Value + precoCorreto.precoHoraAdicional.Value * diferenca.Value.Hours + precoCorreto.precoHoraAdicional.Value * diferenca.Value.Days * 24);
-                            db.Attach(estadia);
-                            db.SaveChanges();
-                            return RedirectToAction("Estadias", "Home");
-                        }
-                        else
-                            ViewBag.errorMessages += "Não existe um preço vigente para esta data de entrada";
-                    }
-                    else
+                    
+
+                    estadia.saida = saidaModelo.saida;
+                    PrecoModel precoCorreto =
+                                    (from p in db.precos
+                                     where estadia.chegada >= p.vigenciaInicio
+                                     && estadia.chegada <= p.vigenciaFim
+                                     select p).SingleOrDefault();
+                    TimeSpan? diferenca = estadia.saida - estadia.chegada;
+                    if (estadia == null)
                         ViewBag.errorMessages += "Não existe um veiculo estacionado no pátio com esta placa";
-
-
+                    if (diferenca.Value.TotalDays < 0)
+                    {
+                        if (ViewBag.errorMessages != null)
+                            ViewBag.errorMessages += ", ";
+                        ViewBag.errorMessages += "Data de saida anterior a data de entrada";
+                    }
+                    if (ViewBag.errorMessages == null)
+                    {
+                        if (diferenca.Value.Days == 0 && diferenca.Value.Hours == 0 && diferenca.Value.Minutes <= 30)
+                            estadia.preco = (precoCorreto.precoHoraInicial.Value / 2);
+                        else if (diferenca.Value.Minutes > 10)
+                            estadia.preco = (precoCorreto.precoHoraInicial.Value + precoCorreto.precoHoraAdicional.Value * (diferenca.Value.Hours + 1) + precoCorreto.precoHoraAdicional.Value * diferenca.Value.Days * 24);
+                        else
+                            estadia.preco = (precoCorreto.precoHoraInicial.Value + precoCorreto.precoHoraAdicional.Value * diferenca.Value.Hours + precoCorreto.precoHoraAdicional.Value * diferenca.Value.Days * 24);
+                        db.Attach(estadia);
+                        db.SaveChanges();
+                        return RedirectToAction("Index", "Estadias");
+                    }
                 }
             }
 
